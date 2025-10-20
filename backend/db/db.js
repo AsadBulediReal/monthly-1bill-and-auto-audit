@@ -12,6 +12,7 @@ const sechema = new mongoose.Schema({
   Company: { type: String, required: true },
   Amount: { type: Number, required: true },
   Channel: { type: String, required: true },
+  Code: { type: String },
   "Transaction Date": { type: Date, required: true },
 });
 
@@ -23,6 +24,7 @@ const nullSechema = new mongoose.Schema({
   Company: { type: String },
   Amount: { type: Number },
   Channel: { type: String },
+  Code: { type: String },
   "Transaction Date": { type: Date },
 });
 

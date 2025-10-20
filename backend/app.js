@@ -84,6 +84,7 @@ app.post("/report", async (req, res) => {
   };
   const fromDateFormated = new Date(fromDate);
   const toDateFormated = new Date(toDate);
+  toDateFormated.setHours(23, 59, 59, 999);
 
   const getSelectedData = [...selectedData, "nullData"];
 
@@ -186,43 +187,43 @@ app.post("/upload", async (req, res) => {
       61: "sutc",
     };
 
+    let logChallan;
     data.map(async (record) => {
-      const getChallan = record[2]?.toString().substr(0, 2);
+      const getChallan = record[0]?.toString().substr(0, 2);
       const getCategorie = await categories[getChallan];
-      const challan = Number(record[2]);
-      // const date =
-      //   typeof record[7] === "string" ? record[7].split("-") : record[7];
+      const challan = Number(record[0]);
 
-      const formatDate =
-        record && typeof record[7] === "string" ? record[7].split("-") : false;
-
-      const date = formatDate
-        ? `${formatDate[2]}/${formatDate[1]}/${formatDate[0]}`
-        : undefined;
+      if (logChallan !== true) {
+        console.log("audit data");
+        console.log(record);
+        logChallan = true;
+      }
 
       if (getCategorie === undefined) {
         db["nullData"].create({
-          "Agent Transaction ID": record[0],
-          "Tran Id": record[1] || 0,
+          "Agent Transaction ID": 0,
+          "Tran Id": 0,
           "Consumer No": challan || 0,
-          "Consumer Name": record[3] || "No Data",
-          Company: record[4] || "No Data",
-          Amount: record[5] || 0,
-          Channel: record[6] || "No Data",
-          "Transaction Date": record[7] || 0,
+          "Consumer Name": record[1] || "No Data",
+          Company: record[3] || "No Data",
+          Amount: record[4] || 0,
+          Channel: record[5] || "No Data",
+          "Transaction Date": record[6] || 0,
+          Code: record[13],
         });
         return;
       }
 
       db[getCategorie].create({
-        "Agent Transaction ID": record[0],
-        "Tran Id": record[1] || 0,
+        "Agent Transaction ID": 0,
+        "Tran Id": 0,
         "Consumer No": challan || 0,
-        "Consumer Name": record[3] || "No Data",
-        Company: record[4] || "No Data",
-        Amount: record[5] || 0,
-        Channel: record[6] || "No Data",
-        "Transaction Date": record[7] || 0,
+        "Consumer Name": record[1] || "No Data",
+        Company: record[3] || "No Data",
+        Amount: record[4] || 0,
+        Channel: record[5] || "No Data",
+        "Transaction Date": record[6] || 0,
+        Code: record[13],
       });
     });
   };
@@ -259,11 +260,9 @@ app.post("/upload", async (req, res) => {
       61: "sutc",
     };
 
-    console.log(data[1]);
-
-    const getCategorie = data[11][2].toString().substr(0, 2);
+    const getCategorie = data[11][0].toString().substr(0, 2);
     const isTheDataExsits = await db[categories[getCategorie]].find({
-      "Consumer No": data[11][2],
+      "Consumer No": data[11][0],
     });
 
     if (isTheDataExsits.length > 0) {
@@ -279,13 +278,15 @@ app.post("/upload", async (req, res) => {
     }
     const execl = [];
     for (let i = 0; i < data.length; i++) {
-      if (i > 10) {
+      if (i > 0) {
         if (data[i].length > 0) {
           execl.push(data[i]);
         }
       }
     }
     console.log(execl[0]);
+    console.log(execl[1]);
+    console.log(execl[2]);
 
     await auditData(execl);
     if (!exists) {
