@@ -5,6 +5,10 @@ import { MultiSelect } from "react-multi-select-component";
 
 const options = [
   { label: "EXAMINATION SEMESTER", value: "examination_semester" },
+  {
+    label: "EXAMINATION SEMESTER CONVOCATION FEE",
+    value: "examination_semester_convocation_fee",
+  },
   { label: "ADMISSION PROCESSING FEE", value: "admission_processing_fee" },
   { label: "ADMISSION FEE", value: "admission_fee" },
   { label: "ADMISSION (RETAIN)", value: "admission_retain" },
@@ -13,6 +17,7 @@ const options = [
     value: "drgs_admission_processing_fee",
   },
   { label: "DRGS CHALLAN", value: "drgs_challan" },
+  { label: "DRGS CONVOCATION FEE", value: "drgs_convocation_fee" },
   {
     label: "HOSTEL ACCOMODATION FEE (BOYS)",
     value: "hostel_accomodation_fee_boys",
@@ -39,7 +44,20 @@ const options = [
     label: "EXAMINATION SEMESTER (AFFAILATED COLLEGE)",
     value: "examination_semester_affailated_college",
   },
+  {
+    label: "EXAMINATION ANNUAL CONVOCATION FEE",
+    value: "examination_annual_convocation_fee",
+  },
+  {
+    label: "GENERAL BRANCH GRADUATE STUDIES",
+    value: "general_branch_graduate_studies",
+  },
   { label: "SUTC", value: "sutc" },
+  { label: "Career Portal challan", value: "career_portal_challan" },
+  {
+    label: "MISCELLANEOUS (ALUMNI REGISTRATION FEE)",
+    value: "miscellaneous_alumni_registration_fee",
+  },
 ];
 
 const ByCmdAccount = ({ change, selected, setSelected }) => {
@@ -151,7 +169,7 @@ const ReportGeneration = ({ users }) => {
       const link = document.createElement("a");
       link.href = url;
       const formattedDate = new Date().toLocaleDateString("en-GB");
-      link.download = "Report " + formattedDate + " .zip"; // Use a descriptive filename
+      link.download = "Report " + formattedDate + ".zip"; // Use a descriptive filename
       link.click();
 
       setSelected([]);

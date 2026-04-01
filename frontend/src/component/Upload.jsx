@@ -115,12 +115,14 @@ const UploadFile = () => {
               "Content-Type": "multipart/form-data",
               "Access-Control-Allow-Origin": "*",
             },
+            validateStatus: () => true,
           }
         );
         setLoading(false);
-        console.log(response.data)
+        console.log(response.ok)
 
         const handeldata = (response) => {
+          console.log(response.status)
           if (response.data.status === 200) {
             setError(false);
             Swal.fire({
@@ -131,7 +133,7 @@ const UploadFile = () => {
               timer: 2000,
             });
             return;
-          } else if (response.data.status > 300) {
+          } else if (response.data.status > 200) {
             Swal.fire({
               icon: "error",
               title: response.data.title,
@@ -152,16 +154,14 @@ const UploadFile = () => {
           response.headers["content-disposition"]?.match(/filename="(.+)"/)[1]
         );
       } catch (error) {
-        () => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-            timer: 2500,
-          });
-          fileInputRef.current.value = null;
-          setError(true);
-        };
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          timer: 2500,
+        });
+        fileInputRef.current.value = null;
+        setError(true);
       }
     } else {
       Swal.fire({
